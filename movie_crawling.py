@@ -42,7 +42,7 @@ for movies in movie_box:
         d_day.append(dday.text)
     if dday is None:
         d_day.append("개봉예정")
-
+##tt
 
 # for i in pre_movies:
 #
