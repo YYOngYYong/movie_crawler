@@ -60,7 +60,7 @@ while i < 14:
                 'timetables': timetables,
                 'seats': seats
             }
-            db.movies.insert_one(doc)
+            db.releasedMovies.insert_one(doc)
             id += 1
             print(doc)
 
