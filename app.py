@@ -1,10 +1,21 @@
 from pymongo import MongoClient
 
 from flask import Flask, render_template, jsonify, request
+import telegram   #텔레그램 모듈을 가져옵니다.
 app = Flask(__name__)
 
 client = MongoClient('localhost', 27017)
 db = client.movieAlarm
+
+
+my_token = '1065194618:AAGIa44CxcEYsNSPmA2Ouwyqo0Zmba1eLSs'   #토큰을 변수에 저장합니다.
+
+bot = telegram.Bot(token=my_token)   #bot을 선언합니다.
+
+updates = bot.getUpdates()  #업데이트 내역을 받아옵니다.
+
+for u in updates:   # 내역중 메세지를 출력합니다.
+    print(u.message)
 
 
 # HTML을 주는 부분
@@ -23,6 +34,16 @@ def movie_not_released():
 def movie_released():
     released = list(db.releasedMovies.find({}, {'_id': False}).sort("title", 1))
     return jsonify({'result': 'success','released': released})
+
+
+@app.route('/request_title', methods=['GET'])
+def request_title():
+    title_receive = request.args.get('title')
+    movie_info = list(db.movies.find({'title': title_receive}, {'_id': False}))
+    print(movie_info)
+    chat_id = '1204783894'
+    bot.sendMessage(chat_id=chat_id, text=movie_info[0]['title']+"\n"+movie_info[0]['d_day'])
+    return jsonify({'result': 'success','released': movie_info[0]})
 
 #
 # @app.route('/api/like', methods=['GET'])
