@@ -1,0 +1,21 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+.select_wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 600px;
+  margin: 0 auto 0 auto;
+}
+.select_container {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+.select_container:last-child {
+  margin-left: 100px;
+}
+.select_container > * {
+  width: 100%;
+}
