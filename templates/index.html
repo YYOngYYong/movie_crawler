@@ -1,84 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Title</title>
 
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-    </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-    </script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
 
     <!-- 구글폰트 -->
-    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
-
-
+    <link
+      href="https://fonts.googleapis.com/css?family=Stylish&display=swap"
+      rel="stylesheet"
+    />
 
     <script>
-        $(document).ready(function () {
-            $('#selectTest1').html('');
-            pre_movie_listing();
+      $(document).ready(function () {
+        $("#not_released").html(
+          '<option disabled value="" selected="selected">개봉예정 영화를 선택하세요</option>'
+        );
+        $("#released").html(
+          '<option disabled value="" selected="selected">개봉 영화를 선택하세요</option>'
+        );
+        movie_listing("not_released");
+        movie_listing("released");
+      });
+
+      function movie_listing(movie_type) {
+        $.ajax({
+          type: "GET",
+          url: `/${movie_type}`,
+          data: {},
+          success: function (response) {
+            for (let i = 0; i < response[movie_type].length; i++) {
+              let movieList = response[movie_type][i];
+              makeCard(movieList["title"], movie_type);
+            }
+          },
         });
+      }
 
-        function pre_movie_listing() {
-            $.ajax({
-                type: "GET",
-                url: "/preMovie",
-                data: {},
-                success: function (response) {
-                    alert("성공입니더");
-
-                    for (let i = 0; i < response['pre_movielist'].length; i++) {
-                        let movieList = response['pre_movielist'][i];
-                        makeCard(movieList['title']);
-                    }
-                }
-            });
-
-        }
-
-
-        function makeCard(title) {
-            let temp_html = `
+      function makeCard(title, selectbox) {
+        let temp_html = `
             <option>${title}</option>
             `;
-            $("#selectTest1").append(temp_html);
-        }
+        $(`#${selectbox}`).append(temp_html);
+      }
     </script>
-    <style>
-        .wrapper { height: 300px; overflow: scroll;}
-    </style>
-</head>
-
-<body>
-<div class="jumbotron text-center">
-        <h1>용아맥 영화알리미</h1>
-        <a href="http://www.cgv.co.kr/theaters/special/show-times.aspx?regioncode=07&theatercode=0013">용산 IMAX 사이트로 이동!!!</a>
+    <link rel='stylesheet' href='../static/css/index.css'>
+  </head>
+  <body>
+    <div class="jumbotron text-center">
+      <h1>용아맥 영화알리미</h1>
+      <a
+        href="http://www.cgv.co.kr/theaters/special/show-times.aspx?regioncode=07&theatercode=0013"
+        >용산 IMAX 사이트로 이동!!!</a
+      >
     </div>
-<div>
-    개봉예정 영화
-</div>
-    <select id="selectTest1" class="selectpicker">
-        <option value="a">a</option>
-        <option value="b">b</option>
-        <option value="c">c</option>
-        <option value="d">d</option>
-        <option value="e">e</option>
-        <option value="f">f</option>
-    </select>
-</body>
-
+    <div class="select_wrapper">
+      <div id="not_released_div" class="select_container">
+        <label>
+          개봉예정 영화
+        </label>
+        <select id="not_released" class="selectpicker"> </select>
+      </div>
+      <div id="released_div" class="select_container">
+        <label>
+          개봉 영화
+        </label>
+        <select id="released" class="selectpicker"> </select>
+      </div>
+    </div>
+  </body>
 </html>

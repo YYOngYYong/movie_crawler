@@ -10,6 +10,9 @@ client = MongoClient('localhost', 27017)
 db = client.movieAlarm
 headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
 
+# 크롤링하기 전에 기존 데이터를 모두 삭제
+db.movies.delete_many({})
+
 comming_movies = requests.get('http://www.cgv.co.kr/movies/pre-movies.aspx')
 #formresult > div > div > div.vignetteListeCollection145 > a > img
 soup = BeautifulSoup(comming_movies.text, 'html.parser')
