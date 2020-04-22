@@ -6,23 +6,27 @@ app = Flask(__name__)
 client = MongoClient('localhost', 27017)
 db = client.movieAlarm
 
-
 # HTML을 주는 부분
 @app.route('/')
 def home():
     return render_template('index.html')
 
-# 클라이언트에서 GET 요청한 url에 따라 개봉영화 리스트 조회
-# 개봉예정 영화
-@app.route('/not_released', methods=['GET'])
-def movie_not_released():
-    not_released = list(db.movies.find({},{'_id':False}).sort("title",1))
-    return jsonify({'result': 'success','not_released': not_released})
-# 개봉 영화
-@app.route('/released', methods=['GET'])
-def movie_released():
-    released = list(db.releasedMovies.find({}, {'_id': False}).sort("title", 1))
-    return jsonify({'result': 'success','released': released})
+# 클라이언트에서 GET 요청한 movietype(released or not_released) url에 따라 개봉영화 리스트 조회
+@app.route('/<movietype>', methods=['GET'])
+def movie_released(movietype):
+    # movietype에 따라 불러올 collection을 지정함
+    dbcollection = db.movies if movietype == 'not_released' else db.releasedMovies
+    movies_list = list(dbcollection.find({}, {'_id': False}))
+    # movies의 각 제목만 반복문으로 빈 배열에 하나씩 넣음
+    titles_array = []
+    i = 0
+    for movie in movies_list:
+        titles_array.append(movie['title'])
+        i += 1
+    # 중복제거를 위해 set
+    titles = list(set(titles_array))
+    titles.sort()
+    return jsonify({'result': 'success', f'{movietype}': titles})
 
 #
 # @app.route('/api/like', methods=['GET'])
