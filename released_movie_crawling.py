@@ -9,6 +9,9 @@ from pymongo import MongoClient  # pymongo를 임포트 하기(패키지 인스�
 client = MongoClient('localhost', 27017)  # mongoDB는 27017 포트로 돌아갑니다.
 db = client.movieAlarm  # 'movieAlarm'라는 이름의 db를 만듭니다.
 
+# 크롤링하기 전에 기존 데이터를 모두 삭제
+db.releasedMovies.delete_many({})
+
 # URL을 읽어서 HTML를 받아오고,
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
