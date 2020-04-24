@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
+from alarm_Dday import alarm_d_0
 
 # client = MongoClient('localhost', 27017)
 # db = client.MWG
@@ -9,6 +10,9 @@ from pymongo import MongoClient
 client = MongoClient('localhost', 27017)
 db = client.movieAlarm
 headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+
+# 기존 데이터 삭제 및 크롤링 바로 전에 D-0 알람을 보내줌
+alarm_d_0()
 
 # 크롤링하기 전에 기존 데이터를 모두 삭제
 db.movies.delete_many({})
