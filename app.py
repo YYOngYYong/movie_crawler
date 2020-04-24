@@ -30,10 +30,21 @@ def movie_not_released():
     not_released = list(db.movies.find({},{'_id':False}).sort("title",1))
     return jsonify({'result': 'success','not_released': not_released})
 # 개봉 영화
-@app.route('/released', methods=['GET'])
-def movie_released():
-    released = list(db.releasedMovies.find({}, {'_id': False}).sort("title", 1))
-    return jsonify({'result': 'success','released': released})
+@app.route('/<movietype>', methods=['GET'])
+def movie_released(movietype):
+    # movietype에 따라 불러올 collection을 지정함
+    dbcollection = db.movies if movietype == 'not_released' else db.releasedMovies
+    movies_list = list(dbcollection.find({}, {'_id': False}))
+    # movies의 각 제목만 반복문으로 빈 배열에 하나씩 넣음
+    titles_array = []
+    i = 0
+    for movie in movies_list:
+        titles_array.append(movie['title'])
+        i += 1
+    # 중복제거를 위해 set
+    titles = list(set(titles_array))
+    titles.sort()
+    return jsonify({'result': 'success', f'{movietype}': titles})
 
 
 @app.route('/request_title', methods=['GET'])
@@ -44,6 +55,9 @@ def request_title():
     chat_id = '1204783894'
     bot.sendMessage(chat_id=chat_id, text=movie_info[0]['title']+"\n"+movie_info[0]['d_day'])
     return jsonify({'result': 'success','released': movie_info[0]})
+
+
+
 
 #
 # @app.route('/api/like', methods=['GET'])
