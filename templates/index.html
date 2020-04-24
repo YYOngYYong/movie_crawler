@@ -58,7 +58,7 @@
           success: function (response) {
             for (let i = 0; i < response[movie_type].length; i++) {
               let movieList = response[movie_type][i];
-              makeCard(movieList["title"], movie_type);
+              makeCard(movieList, movie_type);
             }
           },
         });
