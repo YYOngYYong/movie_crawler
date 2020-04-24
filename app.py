@@ -22,9 +22,7 @@ def home():
     return render_template('index.html')
 
 
-
 # 개봉 영화
-
 
 @app.route('/<movietype>', methods=['GET'])
 def movie_released(movietype):
@@ -43,17 +41,48 @@ def movie_released(movietype):
     return jsonify({'result': 'success', f'{movietype}': titles})
 
 
+
+
+
+
 @app.route('/request_title', methods=['GET'])
 def request_title():
     title_receive = request.args.get('title')
     movie_info = list(db.movies.find({'title': title_receive}, {'_id': False}))
     print(movie_info)
-    chat_id = '1204783894'
+    chat_id = '1028099025'
     bot.sendMessage(chat_id=chat_id, text=movie_info[0]['title']+"\n"+movie_info[0]['d_day'])
     return jsonify({'result': 'success','released': movie_info[0]})
 
 
+@app.route('/not_released_movie', methods=['GET'])
+def insert_not_released():
+    title_receive = request.args.get('title')
 
+    doc = {
+
+        'title':title_receive
+    }
+
+    db.my_not_released.insert_one(doc)
+    return jsonify({'result': 'success','message': 'ㅎ헤ㅔ헤'})
+
+
+@app.route('/released_movie', methods=['GET'])
+def insert_released():
+    title_receive = request.args.get('title')
+
+    doc = {
+        'title': title_receive
+    }
+
+    db.my_released.insert_one(doc)
+    return jsonify({'result': 'success', 'message': '성공'})
+
+
+
+
+#
 #
 # @app.route('/api/like', methods=['GET'])
 # def counting_list():
@@ -65,6 +94,11 @@ def request_title():
 #     # 5. 성공하면 success 메시지를 반환합니다.
 # 	return jsonify({'result': 'success','msg':'like 연결되었습니다!'})
 
+chat_id = '1028099025'
+
+bot.sendMessage(chat_id=chat_id, text="닉네임을 입력해주세요")
+
 
 if __name__ == '__main__':
     app.run('localhost', port=5000, debug=True)
+
