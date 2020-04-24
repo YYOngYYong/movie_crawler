@@ -17,3 +17,4 @@ print(arr)
 
 chat_id = '1028099025'
 bot.sendMessage(chat_id=chat_id, text="안녕하세요, 무비 봇입니다.")
+
