@@ -41,7 +41,7 @@
     <script>
       $(document).ready(function () {
         $("#not_released").html(
-          '<option disabled value="" selected="selected">개봉예정 영화를 선택하세요</option>'
+          '<option disabled value="">개봉예정 영화를 선택하세요</option>'
         );
         $("#released").html(
           '<option disabled value="" selected="selected">개봉 영화를 선택하세요</option>'
@@ -70,6 +70,19 @@
             `;
         $(`#${selectbox}`).append(temp_html);
       }
+
+
+      function request_noSchedule(){
+        let title = $("#not_released option:selected").text();
+        $.ajax({
+          type: "GET",
+          url: `/request_title?title=${title}`,
+          data: {},
+          success: function (response) {
+            alert(response['released']['title'] +"\n" +response['released']['d_day'])
+          }
+        });
+      }
     </script>
     <link rel='stylesheet' href='../static/css/index.css'>
   </head>
@@ -88,6 +101,7 @@
         </label>
         <select id="not_released" class="selectpicker"> </select>
       </div>
+      <button id="request_noSche" onclick="request_noSchedule()">알림받기</button>
       <div id="released_div" class="select_container">
         <label>
           개봉 영화
