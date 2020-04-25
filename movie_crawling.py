@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
-from alarm_Dday import alarm_d_0
+from alarm_Dday import alarm_d_0, alarm_d_waiting
 
 # client = MongoClient('localhost', 27017)
 # db = client.MWG
@@ -76,8 +76,8 @@ for i in range(len(pre_movies)):
         id_num += 1
     n += 1
 
-
-
+# 크롤링 끝난 후 알림 발송!
+alarm_d_waiting()
 
 
 
