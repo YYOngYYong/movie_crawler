@@ -19,3 +19,7 @@
 .select_container > * {
   width: 100%;
 }
+.selectpicker {
+  margin:20px 0 20px 0;
+  height:35px;
+}
