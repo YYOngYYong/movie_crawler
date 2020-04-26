@@ -14,6 +14,7 @@ bot = telegram.Bot(token=my_token)   #bot을 선언합니다.
 updates = bot.getUpdates()  #업데이트 내역을 받아옵니다.
 
 
+##디비에 내가 알림받기 선택한 영화 타이틀들을 조회하여 개봉된 영화와 대조.
 
 def movie_info():
     di = list(db.my_released.find())
@@ -21,11 +22,14 @@ def movie_info():
     movie_piked = ''
     for i in di:
         movie_piked = i['title']
+    # 텔레그램에 뿌려줄 문자열 생성
     result = ''
     for i in all_movie:
+        ##만약 타이틀이 내가 알림받기한 타이틀과 같다면
         if movie_piked == i['title']:
             print('제목',i['title'])
             print('날짜',i['date'])
+            ## 문자열에 제목, 타임테이블, 좌석들 문자열에 추가해준다
             result += f"제목 : {i['title']} \n 날짜 : {i['date']} \n"
             index = 0
             for j in i['timetables']:
