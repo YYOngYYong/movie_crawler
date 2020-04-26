@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from datetime import timedelta
 import re
+from alam_movie_info import movie_info
 
 from pymongo import MongoClient  # pymongo를 임포트 하기(패키지 인스톨 먼저 해야겠죠?)
 
@@ -73,3 +74,6 @@ while i < 14:
     date_now = date_add_day
     date_str = date_now.strftime("%Y%m%d")
     i += 1
+
+
+movie_info()
