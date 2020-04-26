@@ -16,7 +16,7 @@ headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/
 # A1.크롤링을 모두 갱신하기 전에 내가 저장한 영화 정보가 어제 크롤링 목록에 D-1이면 보내줌.
 def alarm_d_0() :
     # 미개봉작 타이를 저장목록 불러와서 배열
-    my_not_released = list(db.my_not_released.find({},{'_id':0}))
+    my_not_released = list(db.mymovie_not_released.find({},{'_id':0}))
     d_0_array = []
     for my_movie in my_not_released:
         d_0_array.append(my_movie['title'])
@@ -40,7 +40,7 @@ def alarm_d_0() :
 # A2. 일별 신규 크롤링을 마친 뒤에 D-day 알림 보내줌.
 def alarm_d_waiting() :
     # 미개봉작 타이를 저장목록 불러와서 배열
-    my_not_released = list(db.my_not_released.find({},{'_id':0}))
+    my_not_released = list(db.mymovie_not_released.find({},{'_id':0}))
     d_array = []
     for my_movie in my_not_released:
         d_array.append(my_movie['title'])
