@@ -1,130 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>영화알리미</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
-  <!-- Required meta tags -->
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
 
+    <!-- 구글폰트 -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Stylish&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- JS -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-  </script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-  </script>
+    <script>
+      $(document).ready(function () {
+        $("#testModal").modal("show");
 
-  <!-- 구글폰트 -->
-  <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet" />
-
-  <script>
-    $(document).ready(function () {
-
-      $('#testModal').modal("show");
-
-
-      $("#not_released").html(
-        '<option disabled value="">개봉예정 영화를 선택하세요</option>'
-      );
-      $("#released").html(
-        '<option disabled value="">개봉 영화를 선택하세요</option>'
-      );
-      movie_listing("not_released");
-      movie_listing("released");
-
-      
-
-    });
-
-    function movie_listing(movie_type) {
-      $.ajax({
-        type: "GET",
-        url: `/${movie_type}`,
-        data: {},
-        success: function (response) {
-          for (let i = 0; i < response[movie_type].length; i++) {
-            let movieList = response[movie_type][i];
-            makeCard(movieList, movie_type);
-          }
-        },
+        $("#not_released").html(
+          '<option disabled value="">개봉예정 영화를 선택하세요</option>'
+        );
+        $("#released").html(
+          '<option disabled value="">개봉 영화를 선택하세요</option>'
+        );
+        movie_listing("not_released");
+        movie_listing("released");
       });
-    }
-    function makeCard(title, selectbox) {
-      let temp_html = `
+
+      function movie_listing(movie_type) {
+        $.ajax({
+          type: "GET",
+          url: `/${movie_type}`,
+          data: {},
+          success: function (response) {
+            for (let i = 0; i < response[movie_type].length; i++) {
+              let movieList = response[movie_type][i];
+              makeCard(movieList, movie_type);
+            }
+          },
+        });
+      }
+      function makeCard(title, selectbox) {
+        let temp_html = `
             <option>${title}</option>
             `;
-      $(`#${selectbox}`).append(temp_html);
-    }
+        $(`#${selectbox}`).append(temp_html);
+      }
 
-    function insert_not_released(){
-      let title = $(`#not_released option:selected`).text();
-      alert(title);
-      $.ajax({
-        type: "GET",
-        url: `/not_released_movie?title=${title}`,
-        data: {},
-        success: function (response) {
-          alert(response['message'])
-        }
-      });
-    }
+      function insert_not_released() {
+        let title = $(`#not_released option:selected`).text();
+        alert(title);
+        $.ajax({
+          type: "GET",
+          url: `/not_released_movie?title=${title}`,
+          data: {},
+          success: function (response) {
+            alert(response["message"]);
+          },
+        });
+      }
 
-    function insert_released(){
-      let title = $(`#released option:selected`).text();
-      alert(title);
-      $.ajax({
-        type: "GET",
-        url: `/released_movie?title=${title}`,
-        data: {},
-        success: function (response) {
-          alert(response['message'])
-        }
-      });
-    }
+      function insert_released() {
+        let title = $(`#released option:selected`).text();
+        alert(title);
+        $.ajax({
+          type: "GET",
+          url: `/released_movie?title=${title}`,
+          data: {},
+          success: function (response) {
+            alert(response["message"]);
+          },
+        });
+      }
+    </script>
+    <link rel="stylesheet" href="../static/css/index.css" />
+  </head>
 
-
-
-
-
-
-  </script>
-  <link rel='stylesheet' href='../static/css/index.css'>
-</head>
-
-<body>
-
-  <div class="jumbotron text-center">
-    <h1>용아맥 영화알리미</h1>
-    <a href="http://www.cgv.co.kr/theaters/special/show-times.aspx?regioncode=07&theatercode=0013">용산 IMAX 사이트로
-      이동!!!</a>
-  </div>
-  <div class="select_wrapper">
-    <div id="not_released_div" class="select_container">
-      <label>
-        개봉예정 영화
-      </label>
-      <select id="not_released" class="selectpicker"> </select>
+  <body>
+    <div class="jumbotron text-center">
+      <h1>용아맥 영화알리미</h1>
+      <a
+        href="http://www.cgv.co.kr/theaters/special/show-times.aspx?regioncode=07&theatercode=0013"
+        >용산 IMAX 사이트로 이동!!!</a
+      >
     </div>
-    <button id="request_noSche" onclick="insert_not_released()">알림받기</button>
-    <div id="released_div" class="select_container">
-      <label>
-        개봉 영화
-      </label>
-      <select id="released" class="selectpicker"> </select>
+    <div class="select_wrapper">
+      <div id="not_released_div" class="select_container">
+        <label>
+          <b>개봉예정작 D-Day 알림</b>
+          <br />
+          <span>CGV의 모든 개봉예정 영화</span>
+        </label>
+        <select id="not_released" class="selectpicker"> </select>
+        <button
+          id="request_noSche"
+          class="btn btn-success"
+          onclick="insert_not_released()"
+        >
+          알림받기
+        </button>
+      </div>
+      <div id="released_div" class="select_container">
+        <label>
+          <b>IMAX 상영시간표/잔여좌석 알림</b>
+          <br />
+          <span>IMAX 영화</span>
+        </label>
+        <select id="released" class="selectpicker"> </select>
+        <button
+          id="request_noSche"
+          class="btn btn-success"
+          onclick="insert_released()"
+        >
+          알림받기
+        </button>
+      </div>
     </div>
-    <button id="request_noSche" onclick="insert_released()">알림받기</button>
-  </div>
-
-
-</body>
-
+  </body>
 </html>
