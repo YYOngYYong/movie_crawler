@@ -64,7 +64,7 @@ def insert_not_released():
         'title':title_receive
     }
 
-    db.my_not_released.insert_one(doc)
+    db.mymovie_not_released.insert_one(doc)
     return jsonify({'result': 'success','message': 'ㅎ헤ㅔ헤'})
 
 
@@ -76,7 +76,7 @@ def insert_released():
         'title': title_receive
     }
 
-    db.my_released.insert_one(doc)
+    db.mymovie_released.insert_one(doc)
     return jsonify({'result': 'success', 'message': '성공'})
 
 
