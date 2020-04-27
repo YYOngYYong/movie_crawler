@@ -96,7 +96,7 @@ def insert_released():
 
 chat_id = '1028099025'
 
-bot.sendMessage(chat_id=chat_id, text="닉네임을 입력해주세요")
+
 
 
 if __name__ == '__main__':

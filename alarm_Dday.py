@@ -58,6 +58,6 @@ def alarm_d_waiting() :
 
     print(alarm_msg)
     # 챗봇으로 오픈일 알려줌
-    chat_id = '1204783894'
+    chat_id = '1028099025'
     bot.sendMessage(chat_id=chat_id, text=alarm_msg)
 
