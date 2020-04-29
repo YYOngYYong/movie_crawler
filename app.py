@@ -2,24 +2,31 @@ from pymongo import MongoClient
 
 from flask import Flask, render_template, jsonify, request
 import telegram   #텔레그램 모듈을 가져옵니다.
+from released_movie_crawling import get_released_movie
+from movie_crawling import  get_not_released_movie
+
+
 app = Flask(__name__)
 
-client = MongoClient('localhost', 27017)
+client = MongoClient('mongodb://test:test@localhost', 27017)
 db = client.movieAlarm
 
 my_token = '1065194618:AAGIa44CxcEYsNSPmA2Ouwyqo0Zmba1eLSs'   #토큰을 변수에 저장합니다.
 
 bot = telegram.Bot(token=my_token)   #bot을 선언합니다.
 
-updates = bot.getUpdates()  #업데이트 내역을 받아옵니다.
+# updates = bot.getUpdates()  #업데이트 내역을 받아옵니다.
 
-for u in updates:   # 내역중 메세지를 출력합니다.
-    print(u.message)
+# for u in updates:   # 내역중 메세지를 출력합니다.
+#     print(u.message)
 
 # HTML을 주는 부분
 @app.route('/')
 def home():
+    get_released_movie()
+    get_not_released_movie()
     return render_template('index.html')
+
 
 
 # 개봉 영화
@@ -27,7 +34,7 @@ def home():
 @app.route('/<movietype>', methods=['GET'])
 def movie_released(movietype):
     # movietype에 따라 불러올 collection을 지정함
-    dbcollection = db.movies if movietype == 'not_released' else db.releasedMovies
+    dbcollection = db.mymovie_not_released if movietype == 'not_released' else db.releasedMovies
     movies_list = list(dbcollection.find({}, {'_id': False}))
     # movies의 각 제목만 반복문으로 빈 배열에 하나씩 넣음
     titles_array = []
@@ -64,7 +71,7 @@ def insert_not_released():
         'title':title_receive
     }
 
-    db.my_not_released.insert_one(doc)
+    db.mymovie_not_released.insert_one(doc)
     return jsonify({'result': 'success','message': 'ㅎ헤ㅔ헤'})
 
 
@@ -94,11 +101,11 @@ def insert_released():
 #     # 5. 성공하면 success 메시지를 반환합니다.
 # 	return jsonify({'result': 'success','msg':'like 연결되었습니다!'})
 
-chat_id = '1028099025'
+# chat_id = '1028099025'
 
 
 
 
 if __name__ == '__main__':
-    app.run('localhost', port=5000, debug=True)
+    app.run('0.0.0.0', port=5000, debug=True)
 

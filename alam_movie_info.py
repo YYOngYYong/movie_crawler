@@ -1,10 +1,11 @@
 from pymongo import MongoClient
 
 from flask import Flask, render_template, jsonify, request
+from apscheduler.schedulers.blocking import BlockingScheduler
 import telegram   #텔레그램 모듈을 가져옵니다.
 app = Flask(__name__)
 
-client = MongoClient('localhost', 27017)
+client = MongoClient('mongodb://test:test@54.180.8.158', 27017)
 db = client.movieAlarm
 
 my_token = '1065194618:AAGIa44CxcEYsNSPmA2Ouwyqo0Zmba1eLSs'   #토큰을 변수에 저장합니다.
@@ -38,13 +39,14 @@ def movie_info():
                 index +=1
             print('--------------------------------------------')
             result += f"--------------------------------------- \n"
-    return result
 
-movie_info()
+            chat_id = '1028099025'
+            bot.sendMessage(chat_id=chat_id, text=result)
 
 
-chat_id = '1028099025'
-bot.sendMessage(chat_id=chat_id, text=movie_info())
+sched = BlockingScheduler()
+sched.add_job(movie_info, 'interval', seconds=10)
+sched.start()
 
 # for i in all_movie:
 #     if movie_piked == i['title']:
