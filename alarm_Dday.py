@@ -14,14 +14,13 @@ d_array = []
 my_not_released = list(db.mymovie_not_released.find({},{'_id':0}))
 for my_movie in my_not_released:
     d_array.append(my_movie['title'])
-
 # movies에서 타이틀과 디데이를 가져옴
 not_released = list(db.movies.find({'d_day': {'$regex':'\w'}},{'_id':False}).sort('d_day',-1))
 
 # not_released의 'title'과 동일하면 새 배열에 저장함
 alarm_list = ''
-for movie in not_released:
-    for my_movie in d_array:
+for my_movie in d_array:
+    for movie in not_released:
         if movie['title'] == my_movie:
             alarm_list = alarm_list + f"\n - {movie['title']}, {movie['d_day']} "
 alarm_msg = f"개봉을 기다리는 영화 {alarm_list}"
