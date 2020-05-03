@@ -34,7 +34,7 @@ def home():
 @app.route('/<movietype>', methods=['GET'])
 def movie_released(movietype):
     # movietype에 따라 불러올 collection을 지정함
-    dbcollection = db.mymovie_not_released if movietype == 'not_released' else db.releasedMovies
+    dbcollection = db.movies if movietype == 'not_released' else db.releasedMovies
     movies_list = list(dbcollection.find({}, {'_id': False}))
     # movies의 각 제목만 반복문으로 빈 배열에 하나씩 넣음
     titles_array = []
