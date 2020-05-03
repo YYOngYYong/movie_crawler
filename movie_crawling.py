@@ -1,4 +1,3 @@
-#-*- coding:utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
@@ -7,6 +6,8 @@ from pymongo import MongoClient
 # client = MongoClient('localhost', 27017)
 # db = client.MWG
 # 타겟 URL을 읽어서 HTML를 받아오고,
+client = MongoClient('mongodb://test:test@54.180.8.158', 27017)
+db = client.movieAlarm
 def not_released_movie_crawler():
     # 크롤링하기 전에 기존 데이터를 모두 삭제
     db.movies.delete_many({})

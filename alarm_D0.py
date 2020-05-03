@@ -1,13 +1,10 @@
-#-*- coding:utf-8 -*-
-# A1. 어제기준으로 D-1인 것이 있으면 알림을 보냄
-
 from pymongo import MongoClient
 import telegram
 
 my_token = '1065194618:AAGIa44CxcEYsNSPmA2Ouwyqo0Zmba1eLSs'   #토큰을 변수에 저장합니다.
 bot = telegram.Bot(token=my_token)   #bot을 선언합니다.
 
-client = MongoClient('mongodb://test:test@localhost', 27017)
+client = MongoClient('mongodb://test:test@54.180.8.158', 27017)
 db = client.movieAlarm
 headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
 
@@ -31,5 +28,5 @@ alarm_msg = f"D-0! 오늘 개봉하는 영화 {alarm_list}"
 
 if alarm_list != '':
     # 챗봇으로 오픈일 알려줌
-    chat_id = '1204783894'
+    chat_id = '1028099025'
     bot.sendMessage(chat_id=chat_id, text=alarm_msg)
