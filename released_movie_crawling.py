@@ -3,9 +3,11 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from datetime import timedelta
 import re
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 from pymongo import MongoClient  # pymongo를 임포트 하기(패키지 인스톨 먼저 해야겠죠?)
-
+from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 client = MongoClient('mongodb://test:test@54.180.8.158', 27017)
 db = client.movieAlarm
@@ -78,6 +80,8 @@ def get_released_movie():
         date_now = date_add_day
         date_str = date_now.strftime("%Y%m%d")
         i += 1
+
+
 
 
 
